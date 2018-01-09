@@ -2,7 +2,7 @@
 
 ```
 1. 数据收集
-    1.1. 性能信息收集
+    1.1. 性能信息收集 DEMO：https://github.com/qq20004604/performance-timing/tree/master/Vue%E7%BB%84%E4%BB%B6/%E5%9B%BE%E8%A1%A8
     1.2. 错误信息收集
 
 2. 数据汇总
