@@ -58,6 +58,9 @@
                     下载资源：{{timer ? timer.requestAndResponse + 'ms': '0'}}<br>
                     DOM树解析：{{timer ? timer.domReady + 'ms': '0'}}<br>
                 </li>
+                <li>
+                    <button @click="refreshPerformance">立即刷新图表（用于从其他页面跳转时使用）</button>
+                </li>
             </ol>
         </div>
     </div>
@@ -239,7 +242,7 @@
 </style>
 <script>
     const chartsHeight = 300
-    import {getData} from '../../../index.js'
+    import {getData, getTimingInfo} from '../../../index.js'
 
     export default {
         created() {
@@ -366,6 +369,19 @@
                 return `onload函数：${this.timer.onload}ms`
             }
         },
-        methods: {}
+        methods: {
+            refreshPerformance() {
+                let timer = getTimingInfo()
+                this.totalSeconds = timer.redirect +
+                    timer.appCache +
+                    timer.DNS +
+                    timer.TCP +
+                    timer.request +
+                    timer.response +
+                    timer.processing +
+                    timer.onload
+                this.timer = timer
+            }
+        }
     }
 </script>
