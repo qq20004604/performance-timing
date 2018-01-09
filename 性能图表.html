@@ -9,91 +9,16 @@
 </head>
 <body>
 <style>
-    #performance {
-        position: relative;
-        width: 500px;
-        height: 300px;
-        border: 1px solid #333;
-        box-sizing: border-box;
-    }
-
-    #performance > .axis-y {
-        position: absolute;
-        top: 50px; /* (50/300) * height px */
-        left: 0;
-        width: 40px; /* (40/500) * width px */
-        overflow: hidden;
-        font-size: 9px;
-        height: 220px; /* (220/300) * height px */
-    }
-
-    #performance > .axis-y > .y-value {
-        position: absolute;
-        height: 10px;
-        line-height: 10px;
-        width: 100%;
-        white-space: normal;
-        text-align: right;
-    }
-
-    #performance > .axis-y > .y4 {
-        top: 0;
-    }
-
-    #performance > .axis-y > .y3 {
-        top: 70px; /* (70/300) * height px */
-    }
-
-    #performance > .axis-y > .y2 {
-        top: 140px; /* (140/300) * height px */
-    }
-
-    #performance > .axis-y > .y1 {
-        top: 210px; /* (210/300) * height px */
-    }
-
-    #performance > .container {
-        position: absolute;
-        top: 50px; /* (50/300) * height px */
-        left: 45px; /* (45/500) * width px */
-        height: 220px; /* (220/300) * height px */
-        border-left: 1px solid #000;;
-        border-bottom: 1px solid #000;
-        width: 300px; /* (300/500) * width px */
-        box-sizing: border-box;
-    }
-
-    #performance > .container > .arrow {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        border-top: 1px solid #000;;
-        border-right: 1px solid #000;;
-    }
-
-    #performance > .container > .y-arrow {
-        top: 0;
-        left: -11px;
-        transform-origin: 100% 0;
-        transform: rotate(-45deg);
-    }
-
-    #performance > .container > .x-arrow {
-        bottom: -11px;
-        right: 0;
-        transform-origin: 100% 0;
-        transform: rotate(45deg);
-    }
 </style>
 <div id="performance">
     <div class="axis-y">
-        <div class="y-value y4">1200</div>
-        <div class="y-value y3">800</div>
-        <div class="y-value y2">400</div>
-        <div class="y-value y1">0</div>
+        <div class="y-row y4">1200</div>
+        <div class="y-row y3">800</div>
+        <div class="y-row y2">400</div>
+        <div class="y-row y1">0</div>
     </div>
     <div class="axis-x">
-
+        <div class="x-col"></div>
     </div>
     <div class="container">
         <div class="arrow y-arrow"></div>

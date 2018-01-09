@@ -6,6 +6,9 @@
  * 我已经自己根据时间顺序，以及对重点内容进行整理，并调整顺序和输出结构，以优化其实际使用价值
  */
 
+// 是否控制台输出日志
+const outputLog = true
+
 function getTimingInfo() {
     if (!window.performance || !window.performance.timing) {
         return null
@@ -46,7 +49,7 @@ function getTimingInfo() {
 
     // 2、appcache
     // DNS 缓存时间
-    times.appcache = t.domainLookupStart - t.fetchStart;
+    times.appCache = t.domainLookupStart - t.fetchStart;
 
     // 3、DNS
     //【重要】DNS 查询时间
@@ -73,64 +76,72 @@ function getTimingInfo() {
     // 8、onload
     //【重要】执行 onload 回调函数的时间
     //【原因】是否太多不必要的操作都放到 onload 回调函数里执行了，考虑过延迟加载、按需加载的策略么？
-    times.onloadEventTime = t.loadEventEnd - t.loadEventStart;
+    times.onload = t.loadEventEnd - t.loadEventStart;
 
-    if (true) {
-        console.info('%c%s%s', 'color:red', '页面加载完成总共耗时                     ：', times.loadPage + 'ms')
-        console.info('%c%s%s', 'color:red', '从最开始，到读取页面第一个字节            ：', times.ttfb + 'ms')
-        console.info('%c%s%s', 'color:red', '从发起request 请求，到所有资源下载完毕    ：', times.requestAndResponse + 'ms')
-        console.info('%c%s%s', 'color:red', '从所有资源下载完毕，到DOM树解析完毕耗时   ：', times.domReady + 'ms')
-        console.info('----下面是页面加载的每一步的耗时----')
-        console.info(times.unloadEvent + 'ms', '：0、前一个页面卸载页面的时间 Prompt for unload')
-        console.info(times.redirect + 'ms', '：1、触发重定向 redirect')
-        console.info(times.appcache + 'ms', '：2、DNS 缓存时间 Appache')
-        console.info(times.DNS + 'ms', '：3、进行DNS 查询 DNS')
-        console.info(times.TCP + 'ms', '：4、TCP 建立连接完成握手的时间 TCP')
-        console.info(times.request + 'ms', '：5、从发起请求到第一次获取返回的数据耗时 Request')
-        console.info(times.response + 'ms', '：6、从获得返回资源的第一个字节，到下载完所有资源的耗时 Response')
-        console.info(times.processing + 'ms', '：7、document从开始加载到文档资源全部加载完毕 Processing')
-        console.info(times.onloadEventTime + 'ms', '：8、执行 onload 回调函数的时间 ：')
-    }
 
-    console.info(times)
     return times;
 }
 
-function drawImage(times, domId) {
-    // 默认id是 performance
-    var DOM = document.getElementById(domId ? domId : 'performance')
-    if (!DOM) {
-        return console.error('绘图DOM不存在')
-    }
-    var domWidth = DOM.clientWidth
-    var domHeight = DOM.clientHeight
-    if (domWidth === 0 || domHeight === 0) {
-        return console.error('')
-    }
+function Log(times) {
+    console.info('%c%s%s', 'color:red', '页面总计耗时                             ：', times.loadPage + 'ms')
+    console.info('%c%s%s', 'color:red', '从最开始，到读取页面第一个字节            ：', times.ttfb + 'ms')
+    console.info('%c%s%s', 'color:red', '从发起request 请求，到所有资源下载完毕    ：', times.requestAndResponse + 'ms')
+    console.info('%c%s%s', 'color:red', '从所有资源下载完毕，到DOM树解析完毕耗时   ：', times.domReady + 'ms')
+    console.info('----下面是页面加载的每一步的耗时----')
+    console.info(times.unloadEvent + 'ms', '：0、前一个页面卸载页面的时间 Prompt for unload')
+    console.info(times.redirect + 'ms', '：1、触发重定向 redirect')
+    console.info(times.appCache + 'ms', '：2、DNS 缓存时间 Appache')
+    console.info(times.DNS + 'ms', '：3、进行DNS 查询 DNS')
+    console.info(times.TCP + 'ms', '：4、TCP 建立连接完成握手的时间 TCP')
+    console.info(times.request + 'ms', '：5、从发起请求到第一次获取返回的数据耗时 Request')
+    console.info(times.response + 'ms', '：6、从获得返回资源的第一个字节，到下载完所有资源的耗时 Response')
+    console.info(times.processing + 'ms', '：7、document从开始加载到文档资源全部加载完毕 Processing')
+    console.info(times.onload + 'ms', '：8、执行 onload 回调函数的时间 ：')
 
-    var totalSeconds = times.unloadEvent +
-        times.redirect +
-        times.appcache +
-        times.DNS +
-        times.TCP +
-        times.request +
-        times.response +
-        times.processing +
-        times.onloadEventTime
+    console.info(times)
 }
 
-if (window.onload) {
-    let f = window.onload
-    window.onload = function () {
-        f()
-        setTimeout(() => {
-            getTimingInfo()
-        }, 1000)
-    }
-} else {
-    window.onload = function () {
-        setTimeout(() => {
-            getTimingInfo()
-        }, 1000)
+function getData() {
+    return new Promise((resolve, reject) => {
+        if (window.onload) {
+            let f = window.onload
+            window.onload = function () {
+                f()
+                setTimeout(() => {
+                    let timer = getTimingInfo()
+                    resolve(timer)
+                }, 0)
+            }
+        } else {
+            window.onload = function () {
+                setTimeout(() => {
+                    let timer = getTimingInfo()
+                    resolve(timer)
+                }, 0)
+            }
+        }
+    })
+}
+
+if (outputLog) {
+    if (window.onload) {
+        let f = window.onload
+        window.onload = function () {
+            f()
+            setTimeout(() => {
+                Log(getTimingInfo())
+            }, 1000)
+        }
+    } else {
+        window.onload = function () {
+            setTimeout(() => {
+                Log(getTimingInfo())
+            }, 1000)
+        }
     }
 }
+export {
+    getTimingInfo,
+    getData
+}
+export default getTimingInfo
