@@ -280,7 +280,7 @@
             appCache() {
                 if (this.timer && this.totalSeconds) {
                     let nowHeight = this.timer.appCache / this.totalSeconds * chartsHeight
-                    let nowBottom = 0
+                    let nowBottom = this.timer.redirect
                     return {
                         bottom: `${nowBottom / this.totalSeconds * chartsHeight}px`,
                         height: `${nowHeight}px`
