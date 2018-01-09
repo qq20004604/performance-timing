@@ -53,10 +53,10 @@
                 <li>显示方式采用的是累加制，因此有可能某些列显示比较短</li>
                 <li>鼠标移动到柱状图对应的列，并短时间保持不动，可以显示该项数据的详细时间；</li>
                 <li>
-                    总计：{{timer ? timer.loadPage + 'ms': '0'}}<br>
-                    下载到资源之前：{{timer ? timer.ttfb + 'ms': '0'}}<br>
-                    下载资源：{{timer ? timer.requestAndResponse + 'ms': '0'}}<br>
-                    DOM树解析：{{timer ? timer.domReady + 'ms': '0'}}<br>
+                    总计：{{timer ? timer.loadPage + 'ms': '< 1ms'}}<br>
+                    下载到资源之前：{{timer ? timer.ttfb + 'ms': '< 1ms'}}<br>
+                    下载资源：{{timer ? timer.requestAndResponse + 'ms': '< 1ms'}}<br>
+                    DOM树解析：{{timer ? timer.domReady + 'ms': '< 1ms'}}<br>
                 </li>
                 <li>
                     <button @click="refreshPerformance">立即刷新图表（用于从其他页面跳转时使用）</button>
@@ -275,7 +275,7 @@
                 }
             },
             redirectTitle() {
-                return `重定向：${this.timer.redirect}ms`
+                return `重定向：${this.timer.redirect ? this.timer.redirect : '< 1'}ms`
             },
             appCache() {
                 if (this.timer && this.totalSeconds) {
@@ -288,7 +288,7 @@
                 }
             },
             appCacheTitle() {
-                return `查询缓存：${this.timer.appCache}ms`
+                return `查询缓存：${this.timer.appCache ? this.timer.appCache : '< 1'}ms`
             },
             DNS() {
                 if (this.timer && this.totalSeconds) {
@@ -301,7 +301,7 @@
                 }
             },
             DNSTitle() {
-                return `DNS查询：${this.timer.DNS}ms`
+                return `DNS查询：${this.timer.DNS ? this.timer.DNS : '< 1'}ms`
             },
             TCP() {
                 if (this.timer && this.totalSeconds) {
@@ -314,7 +314,7 @@
                 }
             },
             TCPTitle() {
-                return `TCP建立链接：${this.timer.TCP}ms`
+                return `TCP建立链接：${this.timer.TCP ? this.timer.TCP : '< 1'}ms`
             },
             request() {
                 if (this.timer && this.totalSeconds) {
@@ -327,7 +327,7 @@
                 }
             },
             requestTitle() {
-                return `请求数据～拿到返回数据第一个字节为止：${this.timer.request}ms`
+                return `请求数据～拿到返回数据第一个字节为止：${this.timer.request ? this.timer.request : '< 1'}ms`
             },
             response() {
                 if (this.timer && this.totalSeconds) {
@@ -340,7 +340,7 @@
                 }
             },
             responseTitle() {
-                return `拿到返回数据第一个字节～拿到所有请求数据：${this.timer.response}ms\n从发起请求～接受完所有数据：${this.timer.request + this.timer.response}ms`
+                return `拿到返回数据第一个字节～拿到所有请求数据：${this.timer.response ? this.timer.response : '< 1'}ms\n从发起请求～接受完所有数据：${this.timer.request + this.timer.response ? (this.timer.request + this.timer.response) : '< 1'}ms`
             },
             processing() {
                 if (this.timer && this.totalSeconds) {
@@ -353,7 +353,7 @@
                 }
             },
             processingTitle() {
-                return `DOM树构成：${this.timer.processing}ms`
+                return `DOM树构成：${this.timer.processing ? this.timer.processing : '< 1'}ms`
             },
             onload() {
                 if (this.timer && this.totalSeconds) {
@@ -366,7 +366,7 @@
                 }
             },
             onloadTitle() {
-                return `onload函数：${this.timer.onload}ms`
+                return `onload函数：${this.timer.onload ? this.timer.onload : '< 1'}ms`
             }
         },
         methods: {
