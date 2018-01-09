@@ -96,6 +96,29 @@ function getTimingInfo() {
     return times;
 }
 
+function drawImage(times, domId) {
+    // 默认id是 performance
+    var DOM = document.getElementById(domId ? domId : 'performance')
+    if (!DOM) {
+        return console.error('绘图DOM不存在')
+    }
+    var domWidth = DOM.clientWidth
+    var domHeight = DOM.clientHeight
+    if (domWidth === 0 || domHeight === 0) {
+        return console.error('')
+    }
+
+    var totalSeconds = times.unloadEvent +
+        times.redirect +
+        times.appcache +
+        times.DNS +
+        times.TCP +
+        times.request +
+        times.response +
+        times.processing +
+        times.onloadEventTime
+}
+
 if (window.onload) {
     let f = window.onload
     window.onload = function () {
